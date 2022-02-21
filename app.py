@@ -7,7 +7,7 @@ from twilio.rest import Client
 load_dotenv()
 
 # DISCORD
-ALERT_CHANNEL = os.getenv("ERROR_ALERT_CHANNEL")
+PNL_CHANNEL = os.getenv("PNL_CHANNEL")
 TEST_CHANNEL = os.getenv("TEST_CHANNEL")
 DISCORD_TOKEN = os.getenv("DISCORD_TOKEN")
 MY_USER_ID = os.getenv("MY_USER_ID")
@@ -38,7 +38,7 @@ def main():
     # create discord client
     client = discord.Client()
 
-    if not all([DISCORD_TOKEN, ALERT_CHANNEL, TEST_CHANNEL, MY_USER_ID]):
+    if not all([DISCORD_TOKEN, PNL_CHANNEL, TEST_CHANNEL, MY_USER_ID]):
         print("Missing environment variables")
         raise Exception("Missing environment variables")
 
@@ -52,10 +52,10 @@ def main():
             return  # ignore self message
 
         isTestChannel = str(message.channel.id) == TEST_CHANNEL
-        isAlertChannel = str(message.channel.id) == ALERT_CHANNEL
+        isPNL_CHANNEL = str(message.channel.id) == PNL_CHANNEL
 
         # either test channel, or Sifa bot in alert channel
-        if isTestChannel or isAlertChannel:
+        if isTestChannel or isPNL_CHANNEL:
             if "greater than 10% of total balance" in message.content:
                 await message.channel.send(
                     f"Account suffers great loss, Bot will initiate call"
